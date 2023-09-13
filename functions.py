@@ -88,6 +88,3 @@ def writer_func(id, fam, name, fname, user_img):
 
 
 
-
-# writer_func("011/624", 'Rahimjonov', 'Azizbek', 'Sharifjon o`gli', 'user')
-# writer_func("011/123", 'Khaydarov', 'Sukhrob', 'Suranbayevich', 'img2')

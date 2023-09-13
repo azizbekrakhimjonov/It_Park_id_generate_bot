@@ -1,7 +1,6 @@
 from PIL import Image, ImageFont, ImageDraw
 from fpdf import FPDF
 
-
 def writer_func(id, fam, name, fname, user_img):
 
     img1 = Image.open(r'pic.jpg')

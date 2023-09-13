@@ -1,2 +1,0 @@
-Pillow
-python-telegram-bot==11.0

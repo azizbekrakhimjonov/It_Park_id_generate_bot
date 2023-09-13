@@ -1,5 +1,5 @@
 from PIL import Image, ImageFont, ImageDraw
-
+from fpdf import FPDF
 
 
 def writer_func(id, fam, name, fname, user_img):
@@ -62,7 +62,29 @@ def writer_func(id, fam, name, fname, user_img):
     ),
     # img.show()
     img1.save(f'{name}.jpg')
-    print('Successfully')
+    print('Successfully is cut and saved')
+
+    class PDF(FPDF):
+        def header(self):
+            pass
+
+        def footer(self):
+            pass
+
+    pdf = PDF()
+    pdf.set_auto_page_break(auto=True)
+    image_files = [f'{name}.jpg', "pic3.jpg"]
+    x = 10
+    y = 10
+    w = 190
+    h = 270
+
+    for image_file in image_files:
+        pdf.add_page()
+        pdf.image(image_file, x=x, y=y, w=w, h=h)
+    pdf_filename = f"{name}.pdf"
+    pdf.output(pdf_filename)
+    print(f"PDF generated as {pdf_filename}")
 
 
 

@@ -25,7 +25,7 @@ def writer_func(id, fam, name, course, user_img):
 
     kichik_rasim = Image.composite(img2, Image.new("RGBA", img2.size), mask_im)  # keraksiz tomonlarni olib tashlash
     img1 = img1.copy()
-    img1.paste(kichik_rasim, (163, 164), mask_im)  # set hexagon avatar idCard
+    img1.paste(kichik_rasim, (163, 160), mask_im)  # set hexagon avatar idCard
 
 
     draw = ImageDraw.Draw(img1)
@@ -34,75 +34,67 @@ def writer_func(id, fam, name, course, user_img):
     W, H = img1.size
 
     # fullname
-    font = ImageFont.truetype("bebas.TTF", 36)
-    _, _, w0, h = draw.textbbox((0, 0), id, font=font)
+    font = ImageFont.truetype("bebas.TTF", 39)
+    _, _, w0, h = draw.textbbox((0, 0), f"ID: {id}", font=ImageFont.truetype("bebas_regular.ttf", 39))
     _, _, w, h = draw.textbbox((0, 0), fam, font=font)
     _, _, w1, h = draw.textbbox((0, 0), name, font=font)
-    _, _, w2, h = draw.textbbox((0, 0), course, font=font)
-    _, _, w3, h = draw.textbbox((0, 0), 'DEVELOPMENT', font=font)
+    _, _, w2, h = draw.textbbox((0, 0), course, font=ImageFont.truetype("bebas_regular.ttf", 39))
+
 
     # set id
     draw.text(
-        ((W - w0) / 2, 830),
-        id, fill='black',
-        font=font,
+        ((W - w0) / 2, 851),
+        f"ID: {id}", fill='black',
+        font=ImageFont.truetype("bebas_regular.ttf", 39),
     ),
 
     # set fam
     draw.text(
-        ((W - w) / 2, 550),
+        ((W - w) / 2, 552),
         fam.upper(), fill='black',
         font=font,
     ),
 
     # set name
     draw.text(
-        ((W - w1) / 2, 600),
+        ((W - w1) / 2, 602),
         name.upper(), fill='black',
         font=font,
     ),
 
     # set course
     draw.text(
-        ((W - w2) / 2, 700),
+        ((W - w2) / 2, 730),
         course.upper(), fill='black',
-        font=font,
+        font=ImageFont.truetype("bebas_regular.ttf", 39),
     ),
-
-    # set course development text
-    # draw.text(
-    #     ((W - w3) / 2, 750),
-    #     'development'.upper(), fill='black',
-    #     font=font,
-    # ),
-
 
     # img.show()
     img1.save(f'{name}.png')
     print('Successfully is cut and saved')
 
-    class PDF(FPDF):
-        def header(self):
-            pass
+    # class PDF(FPDF):
+    #     def header(self):
+    #         pass
+    #
+    #     def footer(self):
+    #         pass
+    #
+    # pdf = PDF()
+    # pdf.set_auto_page_break(auto=True)
+    # image_files = [f'{name}.png', "back.jpg"]
+    # x = 10
+    # y = 10
+    # w = 190
+    # h = 270
+    #
+    # for image_file in image_files:
+    #     pdf.add_page()
+    #     pdf.image(image_file, x=x, y=y, w=w, h=h)
+    # pdf_filename = f"{name}.pdf"
+    # pdf.output(pdf_filename)
+    # print(f"PDF generated as {pdf_filename}")
 
-        def footer(self):
-            pass
-
-    pdf = PDF()
-    pdf.set_auto_page_break(auto=True)
-    image_files = [f'{name}.png', "back.jpg"]
-    x = 10
-    y = 10
-    w = 190
-    h = 270
-
-    for image_file in image_files:
-        pdf.add_page()
-        pdf.image(image_file, x=x, y=y, w=w, h=h)
-    pdf_filename = f"{name}.pdf"
-    pdf.output(pdf_filename)
-    print(f"PDF generated as {pdf_filename}")
 
 
-
-writer_func('011/321', 'Rahimjonov', "Azizbek", 'Backend development',  'user')
+# writer_func('011/321', 'Rahimjonov', "Azizbek", 'Backend development',  'user')

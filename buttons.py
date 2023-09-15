@@ -18,8 +18,8 @@ UI/UX design
 Mobile App development
 Foundation
 """
-button_front = KeyboardButton('Front End development')
-button_back = KeyboardButton('Back End development')
+button_front = KeyboardButton('Frontend development')
+button_back = KeyboardButton('Backend development')
 button_robotics = KeyboardButton('Mobile Robotics')
 button_ui = KeyboardButton('UI/UX design')
 button_mobile = KeyboardButton('Mobile App development')
@@ -30,5 +30,4 @@ course_button = ReplyKeyboardMarkup(resize_keyboard=True).\
     add(button_robotics).\
     add(button_ui).\
     add(button_mobile).\
-    add(button_foundation).\
-    add(cansel_button)
+    add(button_foundation).add(button_cansel)

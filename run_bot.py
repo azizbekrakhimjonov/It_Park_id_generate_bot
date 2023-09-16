@@ -93,8 +93,6 @@ async def load_photo(message: types.Message, state: FSMContext):
         await cm_start(message)
     else:
         await message.photo[-1].download(destination_file=f"{img_name}.png", make_dirs=False)
-        # async with state.proxy() as data:
-        #     data['photo'] = message.photo[0].file_id
         await state.update_data(photo=message.photo[0].file_id)
 
         async with state.proxy() as data:
@@ -106,18 +104,20 @@ async def load_photo(message: types.Message, state: FSMContext):
 
 async def load_make(message: types.Message):
     if message.text == 'Получить ID карту':
-        await message.answer('Готово!', reply_markup=start_button)
         # media = MediaGroup()
         # media.attach(InputMediaDocument(open(f'{img_name}.pdf', 'rb')))
         # await message.reply_media_group(media=media)
         try:
             with open(f'{img_name}.png', 'rb') as fg:
                 await bot.send_document(message.chat.id, InputFile(fg))
-            with open('back.jpg', 'rb') as bg:
-                await bot.send_document(message.chat.id, InputFile(bg))
         except Exception as e:
             print(f"An error: {str(e)}")
+            await message.answer('Ошибка при отправке фотографии', reply_markup=ReplyKeyboardRemove())
+            await asyncio.sleep(1)
+            await cm_start(message)
+            os.system(f'rm {img_name}.png')
 
+        await message.answer('Готово!', reply_markup=start_button)
         os.system(f'rm {img_name}.png')
         print("Image is deleting...")
 

@@ -25,7 +25,7 @@ def writer_func(id, fam, name, course, user_img):
 
     kichik_rasim = Image.composite(img2, Image.new("RGBA", img2.size), mask_im)  # keraksiz tomonlarni olib tashlash
     img1 = img1.copy()
-    img1.paste(kichik_rasim, (163, 160), mask_im)  # set hexagon avatar idCard
+    img1.paste(kichik_rasim, (156, 159), mask_im)  # set hexagon avatar idCard
 
 
     draw = ImageDraw.Draw(img1)
@@ -43,21 +43,21 @@ def writer_func(id, fam, name, course, user_img):
 
     # set id
     draw.text(
-        ((W - w0) / 2, 851),
+        ((W - w0) / 2, 839),
         f"ID: {id}", fill='black',
         font=ImageFont.truetype("bebas_regular.ttf", 39),
     ),
 
     # set fam
     draw.text(
-        ((W - w) / 2, 552),
+        ((W - w) / 2, 555),
         fam.upper(), fill='black',
         font=font,
     ),
 
     # set name
     draw.text(
-        ((W - w1) / 2, 602),
+        ((W - w1) / 2, 605),
         name.upper(), fill='black',
         font=font,
     ),

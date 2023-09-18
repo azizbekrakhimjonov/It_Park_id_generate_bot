@@ -1,10 +1,11 @@
 from PIL import Image, ImageFont, ImageDraw
 from fpdf import FPDF
 
-def writer_func(id, fam, name, course, user_img):
+def writer_func(id, fam, name, course):
+    picID = id.replace('/', '_')
 
     img1 = Image.open(r'pic.png')
-    img2 = Image.open(f"{user_img}.png")
+    img2 = Image.open(f"{picID}.png")
 
     width, height = img2.size
     left = 0
@@ -70,7 +71,7 @@ def writer_func(id, fam, name, course, user_img):
     ),
 
     # img.show()
-    img1.save(f'{name}.png')
+    img1.save(f'{picID}.png')
     print('Successfully is cut and saved')
 
     # class PDF(FPDF):
@@ -97,4 +98,4 @@ def writer_func(id, fam, name, course, user_img):
 
 
 
-# writer_func('011/321', 'Rahimjonov', "Azizbek", 'Backend development',  'user')
+# writer_func('011/321', 'Rahimjonov', "Azizbek", 'Backend development')

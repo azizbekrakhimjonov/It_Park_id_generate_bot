@@ -23,7 +23,7 @@ dp = Dispatcher(bot, storage=storage)
 # (id, fam, name, course, user_img):
 
 ID = None
-img_name = None
+_id = None
 
 
 class FSMAdmin(StatesGroup):
@@ -41,12 +41,14 @@ async def cm_start(message: types.Message):
 
 
 async def load_id(message: types.Message, state: FSMContext):
+    global _id
     if message.text == 'Отменить заявку':
         await message.answer('Вы вернулись в начало.', reply_markup=ReplyKeyboardRemove())
         await asyncio.sleep(1)
         await cm_start(message)
     else:
         await state.update_data(id=message.text.strip())
+        _id = message.text.strip().replace('/', '_')
         await FSMAdmin.next()
         await message.reply("Введите фамилию ученика:")
 
@@ -63,13 +65,12 @@ async def load_fam(message: types.Message, state: FSMContext):
 
 
 async def load_name(message: types.Message, state: FSMContext):
-    global img_name
     if message.text == 'Отменить заявку':
         await message.answer('Вы вернулись в начало.', reply_markup=ReplyKeyboardRemove())
         await asyncio.sleep(1)
         await cm_start(message)
     else:
-        img_name = message.text.strip()
+
         await state.update_data(name=message.text.strip())
         await FSMAdmin.next()
         await message.reply("Введите курс ученика:", reply_markup=course_button)
@@ -92,11 +93,11 @@ async def load_photo(message: types.Message, state: FSMContext):
         await asyncio.sleep(1)
         await cm_start(message)
     else:
-        await message.photo[-1].download(destination_file=f"{img_name}.png", make_dirs=False)
+        await message.photo[-1].download(destination_file=f"{_id}.png", make_dirs=False)
         await state.update_data(photo=message.photo[0].file_id)
 
         async with state.proxy() as data:
-            writer_func(data['id'], data['fam'], data['name'], data['course'], f"{img_name}")
+            writer_func(data['id'], data['fam'], data['name'], data['course'])
 
         await state.finish()
         await message.reply("Успешно! Нажмите на «Получить ID карту»", reply_markup=result)
@@ -108,17 +109,17 @@ async def load_make(message: types.Message):
         # media.attach(InputMediaDocument(open(f'{img_name}.pdf', 'rb')))
         # await message.reply_media_group(media=media)
         try:
-            with open(f'{img_name}.png', 'rb') as fg:
+            with open(f'{_id}.png', 'rb') as fg:
                 await bot.send_document(message.chat.id, InputFile(fg))
         except Exception as e:
             print(f"An error: {str(e)}")
             await message.answer('Ошибка при отправке фотографии', reply_markup=ReplyKeyboardRemove())
             await asyncio.sleep(1)
             await cm_start(message)
-            os.system(f'rm {img_name}.png')
+            os.system(f'rm {_id}.png')
 
         await message.answer('Готово!', reply_markup=start_button)
-        os.system(f'rm {img_name}.png')
+        os.system(f'rm {_id}.png')
         print("Image is deleting...")
 
     if message.text == 'Назад':

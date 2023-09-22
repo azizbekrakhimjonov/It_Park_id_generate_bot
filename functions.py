@@ -1,5 +1,5 @@
 from PIL import Image, ImageFont, ImageDraw
-from fpdf import FPDF
+
 
 def writer_func(id, fam, name, course):
     picID = id.replace('/', '_')
@@ -14,7 +14,10 @@ def writer_func(id, fam, name, course):
     bottom = height
     m = img2.crop((left, top, right, bottom))
 
-    img2 = m.resize((320, 370))
+    weight = 320
+    aspect_ratio = m.width / m.height
+    new_height = int(weight / aspect_ratio)
+    img2 = m.resize((weight, new_height))
 
     hexagon_size = (320, 370)  # 320
     mask_im = Image.new("L", img2.size, 0)
@@ -27,7 +30,6 @@ def writer_func(id, fam, name, course):
     kichik_rasim = Image.composite(img2, Image.new("RGBA", img2.size), mask_im)  # keraksiz tomonlarni olib tashlash
     img1 = img1.copy()
     img1.paste(kichik_rasim, (156, 159), mask_im)  # set hexagon avatar idCard
-
 
     draw = ImageDraw.Draw(img1)
 
@@ -74,28 +76,7 @@ def writer_func(id, fam, name, course):
     img1.save(f'{picID}.png')
     print('Successfully is cut and saved')
 
-    # class PDF(FPDF):
-    #     def header(self):
-    #         pass
-    #
-    #     def footer(self):
-    #         pass
-    #
-    # pdf = PDF()
-    # pdf.set_auto_page_break(auto=True)
-    # image_files = [f'{name}.png', "back.jpg"]
-    # x = 10
-    # y = 10
-    # w = 190
-    # h = 270
-    #
-    # for image_file in image_files:
-    #     pdf.add_page()
-    #     pdf.image(image_file, x=x, y=y, w=w, h=h)
-    # pdf_filename = f"{name}.pdf"
-    # pdf.output(pdf_filename)
-    # print(f"PDF generated as {pdf_filename}")
 
 
 
-# writer_func('011/321', 'Rahimjonov', "Azizbek", 'Backend development')
+# writer_func('Image', 'Rahimjonov', "Azizbek", 'Backend development')
